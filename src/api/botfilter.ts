@@ -11,5 +11,5 @@ export function getJobList() {
 }
 
 export function jobApplication(body: JobApplicationReq) {
-    return apiPost<JobApplicationRes, JobApplicationReq>(`/api/job-application/apply-to-job`, body);
+    return apiPost<JobApplicationRes, JobApplicationReq>(`/api/candidate/apply-to-job`, body);
 }
