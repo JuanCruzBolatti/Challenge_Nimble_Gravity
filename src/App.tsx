@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import type { Candidate, Job } from "./types/api";
+import { getJobList } from "./api/botfilter";
+import CandidateForm from "./components/CandidateForm";
+import { CandidateContent } from "./components/CandidateContent";
+import { JobsList } from "./components/JobsList";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [candidate, setCandidate] = useState<Candidate | null>(null);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobsLoading, setJobsLoading] = useState(true);
+  const [jobsError, setJobsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+
+    async function load() {
+      setJobsLoading(true);
+      setJobsError(null);
+
+      try {
+        const data = await getJobList();
+        if (!alive) return;
+        setJobs(data);
+      } catch (err) {
+        if (!alive) return;
+        setJobsError(err instanceof Error ? err.message : "Error desconocido");
+      } finally {
+        if (!alive) return;
+        setJobsLoading(false);
+      }
+    }
+
+    void load();
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
+      <h1 style={{ marginTop: 0 }}>Nimble Gravity Bot Filter</h1>
+
+      <CandidateForm onLoaded={setCandidate} />
+      {candidate && <CandidateContent candidate={candidate} />}
+
+      {jobsLoading && <p>Cargando posiciones...</p>}
+      {jobsError && <p style={{ color: "crimson" }}>{jobsError}</p>}
+
+      {!jobsLoading && !jobsError && <JobsList jobs={jobs} candidate={candidate} />}
+    </div>
+  );
 }
 
 export default App
