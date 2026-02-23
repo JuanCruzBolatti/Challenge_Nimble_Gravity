@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import type { Candidate, Job } from "./types/api";
 import { getJobList } from "./api/botfilter";
 import CandidateForm from "./components/CandidateForm";
@@ -40,13 +39,13 @@ function App() {
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
-      <h1 style={{ marginTop: 0 }}>Nimble Gravity Bot Filter</h1>
+      <h1 style={{ marginTop: 0 }}>Nimble Gravity Challenge</h1>
 
       <CandidateForm onLoaded={setCandidate} />
       {candidate && <CandidateContent candidate={candidate} />}
 
       {jobsLoading && <p>Cargando posiciones...</p>}
-      {jobsError && <p style={{ color: "crimson" }}>{jobsError}</p>}
+      {jobsError && <p style={{ color: "red" }}>{jobsError}</p>}
 
       {!jobsLoading && !jobsError && <JobsList jobs={jobs} candidate={candidate} />}
     </div>

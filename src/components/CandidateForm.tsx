@@ -36,7 +36,6 @@ export default function CandidateForm({ onLoaded }: Props) {
         <section className="form">
             <h2>Cargar Candidato</h2>
 
-            // React.FormEvent esta en desuso, al usar SubmitEvent hay que aclararlo actualmente
             <form onSubmit={(e) => {void handleSubmit(e.nativeEvent as SubmitEvent);}}>
                 <input type="email" placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <button type="submit" disabled={loading}> {loading ? "Buscando" : "Cargar Candidato"} </button>

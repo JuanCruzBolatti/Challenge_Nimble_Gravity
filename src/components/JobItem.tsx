@@ -19,17 +19,17 @@ export function JobItem({ job, repoUrl, onRepoUrlChange, canSubmit, submitState,
   const isSubmitting = submitState.status === "loading";
 
   return (
-    <div style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16 }}>
+    <div className="job-item">
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <div>
+        <div style={{ textAlign: "left" }}>
           <h3 style={{ margin: 0 }}>{job.title}</h3>
-          <small style={{ color: "#666" }}>Job ID: {job.id}</small>
+          <small style={{ color: "#666", marginLeft: 0 }}>Job ID: {job.id}</small>
         </div>
 
         <button
           onClick={onSubmit}
           disabled={!canSubmit || isSubmitting}
-          style={{ padding: "8px 12px", height: 40 }}
+          style={{ padding: "8px 12px", height: 40, color: "#fff" }}
           title={!canSubmit ? "Cargá el candidato primero" : undefined}
         >
           {isSubmitting ? "Submitting..." : "Submit"}
@@ -37,13 +37,12 @@ export function JobItem({ job, repoUrl, onRepoUrlChange, canSubmit, submitState,
       </div>
 
       <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
-        <label style={{ display: "grid", gap: 6 }}>
+        <label style={{ display: "grid", gap: 6, textAlign: "left" }}>
           <span>Repo URL (GitHub)</span>
           <input
             value={repoUrl}
             onChange={(e) => onRepoUrlChange(e.target.value)}
             placeholder="https://github.com/tu-usuario/tu-repo"
-            style={{ padding: 8 }}
           />
         </label>
 
